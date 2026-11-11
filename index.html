@@ -1,150 +1,4 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SACAI RESULTS</title>
-
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f2f5f9;color:#243447}
-header{background:#10243a;color:white;padding:30px 7%;border-bottom:4px solid #c6a45b}
-header small{color:#e2c47e;letter-spacing:2px}
-header h1{margin:10px 0 0;font-size:29px;letter-spacing:1px}
-main{max-width:950px;margin:40px auto;padding:0 18px}
-.panel{background:white;padding:28px;border-radius:12px;border:1px solid #e1e7ee;box-shadow:0 5px 20px #10243a0d;margin-bottom:22px}
-h2{color:#10243a;margin-top:0}
-label{display:block;font-weight:bold;margin:17px 0 7px;font-size:14px}
-input{width:100%;padding:13px;border:1px solid #ccd5df;border-radius:7px;font-size:15px}
-button{background:#10243a;color:white;border:0;border-radius:7px;padding:13px 20px;margin-top:20px;cursor:pointer;font-weight:bold}
-button:hover{background:#244765}
-.secondary{background:#c6a45b;color:#10243a;margin-left:8px}
-.hidden{display:none}
-.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:22px 0}
-.stat{background:#f5f7fa;padding:17px;border-radius:8px;border:1px solid #e1e7ee}
-.stat small{display:block;color:#718096;margin-bottom:8px}
-.stat strong{font-size:25px;color:#10243a}
-table{width:100%;border-collapse:collapse;margin-top:20px}
-th,td{text-align:left;padding:14px 10px;border-bottom:1px solid #e1e7ee}
-th{background:#f5f7fa;color:#65758a;font-size:12px;text-transform:uppercase}
-td:last-child,th:last-child{text-align:right}
-.distinction{color:#98742c;font-weight:bold}
-footer{background:#10243a;color:white;text-align:center;padding:22px 10px 12px;margin-top:50px}
-footer .portal{font-size:12px;color:#e2c47e}
-footer .disclosure{color:white;font-size:9px;margin-top:8px}
-@media(max-width:600px){
-.summary{grid-template-columns:1fr}
-header h1{font-size:23px}
-.panel{padding:19px}
-table{font-size:13px}
-th,td{padding:11px 6px}
-}
-@media print{
-header,.login,.actions,footer{display:none}
-body{background:white}
-.panel{box-shadow:none;border:none}
-}
-</style>
-</head>
-
-<body>
-
-<header>
-<small>EXAMINATION RESULTS</small>
-<h1>SACAI RESULTS</h1>
-</header>
-
-<main>
-
-<section class="panel login" id="login">
-<h2>Candidate Login</h2>
-
-<label for="candidate">Candidate Name</label>
-<input id="candidate" type="text" placeholder="Enter candidate name">
-
-<label for="exam">Examination Number</label>
-<input id="exam" type="text" placeholder="Enter examination number">
-
-<button onclick="showResults()">View Results</button>
-</section>
-
-<section class="hidden" id="results">
-
-<div class="panel">
-<h2>Candidate Information</h2>
-<p><strong>Candidate Name:</strong> <span id="displayName"></span></p>
-<p><strong>Examination Number:</strong> <span id="displayExam"></span></p>
-<p><strong>Examination Year:</strong> 2026</p>
-</div>
-
-<div class="panel">
-<h2>Subject Results</h2>
-<table>
-<thead>
-<tr>
-<th>Subject</th>
-<th>Mark</th>
-<th>Percentage</th>
-<th>Symbol</th>
-</tr>
-</thead>
-<tbody id="subjectRows"></tbody>
-</table>
-</div>
-
-<div class="panel">
-<h2>Results Summary</h2>
-<div class="summary">
-<div class="stat">
-<small>Average</small>
-<strong id="average">0%</strong>
-</div>
-<div class="stat">
-<small>Distinctions</small>
-<strong id="distinctions">0</strong>
-</div>
-<div class="stat">
-<small>Overall Status</small>
-<strong id="status">Pass</strong>
-</div>
-</div>
-</div>
-
-<div class="panel actions">
-<h2>Results Statement</h2>
-<button onclick="window.print()">Print Results</button>
-<button class="secondary" onclick="logout()">Log Out</button>
-</div>
-
-</section>
-</main>
-
-<footer>
-<div class="portal">Browser Portal · s.results</div>
-</footer>
-
-<script>
-const subjects = [
-{name:"English Home Language",mark:82},
-{name:"Afrikaans First Additional Language",mark:74},
-{name:"Mathematics",mark:81},
-{name:"Accounting",mark:86},
-{name:"Life Orientation",mark:90},
-{name:"Life Sciences",mark:84},
-{name:"Physical Sciences",mark:67}
-];
-
-function getSymbol(mark){
-if(mark>=80)return "A";
-if(mark>=70)return "B";
-if(mark>=60)return "C";
-if(mark>=50)return "D";
-if(mark>=40)return "E";
-if(mark>=30)return "F";
-return "G";
-}
-
 function showResults(){
 const name=document.getElementById("candidate").value.trim();
 const exam=document.getElementById("exam").value.trim();
@@ -153,6 +7,14 @@ if(!name||!exam){
 alert("Please enter your candidate name and examination number.");
 return;
 }
+
+if(exam !== "2268780956463"){
+document.getElementById("errorMessage").textContent =
+"Incorrect examination number. Please try again.";
+return;
+}
+
+document.getElementById("errorMessage").textContent = "";
 
 document.getElementById("displayName").textContent=name;
 document.getElementById("displayExam").textContent=exam;
@@ -188,12 +50,3 @@ document.getElementById("status").textContent="Pass";
 document.getElementById("login").classList.add("hidden");
 document.getElementById("results").classList.remove("hidden");
 }
-
-function logout(){
-document.getElementById("results").classList.add("hidden");
-document.getElementById("login").classList.remove("hidden");
-}
-</script>
-
-</body>
-</html>
