@@ -92,11 +92,6 @@ button:hover {
     background: #243b65;
 }
 
-.gold {
-    color: #b18a25;
-    font-weight: bold;
-}
-
 #resultsSection {
     display: none;
 }
@@ -200,16 +195,15 @@ footer {
 <body>
 
 <header>
-    <h1>Independent Examination Results Portal</h1>
+    <h1> Examination Results Portal</h1>
     <p>Candidate Results </p>
 </header>
 
 <div class="disclosure">
-   
+    
 </div>
 
 <div class="container no-print" id="loginSection">
-
     <h2>Candidate Login</h2>
     <p>Enter your candidate details to access the results.</p>
 
@@ -220,18 +214,16 @@ footer {
     <input type="text" id="exam" placeholder="Enter examination number">
 
     <button onclick="showResults()">Access Results</button>
-
 </div>
 
 <div class="container" id="resultsSection">
-
     <h2>Candidate Results</h2>
 
     <p><strong>Candidate:</strong> <span id="displayName"></span></p>
     <p><strong>Examination Number:</strong> <span id="displayExam"></span></p>
 
     <div class="results-disclosure">
-        
+       
     </div>
 
     <table>
@@ -246,7 +238,6 @@ footer {
     </table>
 
     <div class="summary">
-
         <div class="summary-card">
             <h3>Average Percentage</h3>
             <p id="average">0%</p>
@@ -259,24 +250,21 @@ footer {
 
         <div class="summary-card">
             <h3>Status</h3>
-            <p id="status"></p>
+            
         </div>
-
     </div>
 
     <div class="no-print">
         <button onclick="window.print()">Print Results</button>
         <button onclick="logout()">Logout</button>
     </div>
-
 </div>
 
 <footer>
-    Independent Examination Results 
+     Examination Results Demonstration
 </footer>
 
 <script>
-
 const REQUIRED_EXAM_NUMBER = "2268780956463";
 
 const subjects = [
@@ -290,14 +278,13 @@ const subjects = [
 ];
 
 const distinctionSubjects = [
-    "English Home Language",
-    "Afrikaans First Additional Language",
+    "Life Orientation",
     "Life Sciences",
-    "Life Orientation"
+    "Afrikaans First Additional Language",
+    "English Home Language"
 ];
 
 function showResults() {
-
     const name = document.getElementById("candidate").value.trim();
     const exam = document.getElementById("exam").value.trim();
 
@@ -321,7 +308,6 @@ function showResults() {
     let distinctionCount = 0;
 
     subjects.forEach(subject => {
-
         total += subject.percentage;
 
         if (distinctionSubjects.includes(subject.name)) {
@@ -350,15 +336,11 @@ function showResults() {
 }
 
 function logout() {
-
     document.getElementById("resultsSection").style.display = "none";
     document.getElementById("loginSection").style.display = "block";
-
     document.getElementById("candidate").value = "";
     document.getElementById("exam").value = "";
-
 }
-
 </script>
 
 </body>
