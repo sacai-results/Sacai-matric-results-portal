@@ -1,52 +1,493 @@
 
-function showResults(){
-const name=document.getElementById("candidate").value.trim();
-const exam=document.getElementById("exam").value.trim();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-if(!name||!exam){
-alert("Please enter your candidate name and examination number.");
-return;
+<title> Examination Results Portal</title>
+
+<style>
+* {
+    box-sizing: border-box;
 }
 
-if(exam !== "2268780956463"){
-document.getElementById("errorMessage").textContent =
-"Incorrect examination number. Please try again.";
-return;
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #eef1f5;
+    color: #202c3d;
 }
 
-document.getElementById("errorMessage").textContent = "";
-
-document.getElementById("displayName").textContent=name;
-document.getElementById("displayExam").textContent=exam;
-
-const rows=document.getElementById("subjectRows");
-rows.innerHTML="";
-
-let total=0;
-let distinctions=0;
-
-subjects.forEach(subject=>{
-total+=subject.mark;
-if(subject.mark>=80)distinctions++;
-
-const row=document.createElement("tr");
-const symbol=getSymbol(subject.mark);
-
-row.innerHTML=`
-<td>${subject.name}</td>
-<td>${subject.mark}</td>
-<td>${subject.mark}%</td>
-<td class="${subject.mark>=80?"distinction":""}">${symbol}</td>
-`;
-rows.appendChild(row);
-});
-
-const average=(total/subjects.length).toFixed(1);
-
-document.getElementById("average").textContent=average+"%";
-document.getElementById("distinctions").textContent=distinctions;
-document.getElementById("status").textContent="Pass";
-
-document.getElementById("login").classList.add("hidden");
-document.getElementById("results").classList.remove("hidden");
+header {
+    background: #142641;
+    color: white;
+    padding: 25px 20px;
+    border-bottom: 4px solid #c5a45b;
 }
+
+.header-content {
+    max-width: 1000px;
+    margin: auto;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 25px;
+    letter-spacing: 1.5px;
+}
+
+header p {
+    margin: 8px 0 0;
+    color: #d9c58d;
+    font-size: 13px;
+}
+
+.notice {
+    background: #fff0ce;
+    border-bottom: 1px solid #e2c77e;
+    color: #654b12;
+    text-align: center;
+    padding: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 35px auto;
+    padding: 0 20px;
+}
+
+.panel {
+    background: white;
+    border: 1px solid #dce1e8;
+    border-radius: 5px;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04);
+}
+
+.hidden {
+    display: none;
+}
+
+.section-title {
+    color: #142641;
+    font-size: 19px;
+    padding-bottom: 13px;
+    border-bottom: 1px solid #dce1e8;
+    margin-top: 0;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    font-size: 13px;
+    margin-top: 18px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 7px;
+    border: 1px solid #cbd3df;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+button {
+    background: #142641;
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    margin-top: 22px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background: #29466c;
+}
+
+#errorMessage {
+    color: #bd2929;
+    font-size: 13px;
+}
+
+.candidate-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    background: #f5f7fa;
+    border: 1px solid #e0e5ec;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.detail-label {
+    color: #647084;
+    font-size: 12px;
+    margin-bottom: 6px;
+}
+
+.detail-value {
+    color: #172b48;
+    font-size: 15px;
+    font-weight: bold;
+    overflow-wrap: anywhere;
+}
+
+.table-title {
+    color: #142641;
+    font-size: 16px;
+    margin-top: 30px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th {
+    background: #142641;
+    color: white;
+    font-size: 13px;
+    text-align: left;
+}
+
+th, td {
+    border: 1px solid #dce1e8;
+    padding: 14px 12px;
+}
+
+td {
+    font-size: 13px;
+}
+
+tr:nth-child(even) {
+    background: #f5f7fa;
+}
+
+.summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 25px;
+}
+
+.summary-card {
+    background: #f4f6f9;
+    border: 1px solid #e0e5ec;
+    padding: 20px 12px;
+    text-align: center;
+    border-radius: 4px;
+}
+
+.summary-card span {
+    display: block;
+    color: #647084;
+    font-size: 12px;
+}
+
+.summary-card strong {
+    display: block;
+    margin-top: 10px;
+    color: #142641;
+    font-size: 23px;
+}
+
+.result-disclosure {
+    margin-top: 25px;
+    padding: 12px;
+    border: 1px solid #e2c77e;
+    background: #fff8e8;
+    color: #654b12;
+    font-size: 12px;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+footer {
+    background: #142641;
+    color: #e1e7ef;
+    text-align: center;
+    padding: 20px;
+    margin-top: 45px;
+    font-size: 12px;
+}
+
+@media(max-width: 650px) {
+    .container {
+        padding: 0 12px;
+    }
+
+    .panel {
+        padding: 18px;
+    }
+
+    .candidate-details {
+        grid-template-columns: 1fr;
+    }
+
+    .summary {
+        grid-template-columns: 1fr;
+    }
+
+    th, td {
+        padding: 10px 7px;
+        font-size: 11px;
+    }
+
+    header h1 {
+        font-size: 20px;
+    }
+}
+
+@media print {
+    header, footer, .notice, .actions, #login {
+        display: none !important;
+    }
+
+    body {
+        background: white;
+    }
+
+    .container {
+        margin: 0;
+        max-width: none;
+    }
+
+    .panel {
+        border: none;
+        box-shadow: none;
+    }
+
+    .result-disclosure {
+        display: block !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-content">
+        <h1>EXAMINATION RESULTS</h1>
+        <p> Candidate Results Portal</p>
+    </div>
+</header>
+
+<div class="notice">
+  
+</div>
+
+<main class="container">
+
+    <section class="panel" id="login">
+
+        <h2 class="section-title">Candidate Access</h2>
+
+        <p>Enter the demonstration details to view the fictional sample results.</p>
+
+        <label for="candidate">Candidate Name</label>
+        <input
+            type="text"
+            id="candidate"
+            placeholder="Enter candidate name"
+        >
+
+        <label for="exam">Examination Number</label>
+        <input
+            type="text"
+            id="exam"
+            placeholder="Enter examination number"
+        >
+
+        <p id="errorMessage"></p>
+
+        <button onclick="showResults()">View Results</button>
+
+    </section>
+
+    <section class="panel hidden" id="results">
+
+        <h2 class="section-title">Candidate Results Statement</h2>
+
+        <div class="candidate-details">
+
+            <div>
+                <div class="detail-label">Candidate Name</div>
+                <div class="detail-value" id="displayName"></div>
+            </div>
+
+            <div>
+                <div class="detail-label">Examination Number</div>
+                <div class="detail-value" id="displayExam"></div>
+            </div>
+
+            <div>
+                <div class="detail-label">Examination Year</div>
+                <div class="detail-value">2026</div>
+            </div>
+
+            <div>
+                <div class="detail-label">Statement Type</div>
+                
+            </div>
+
+        </div>
+
+        <h3 class="table-title">Subject Results</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Percentage</th>
+                    <th>Level</th>
+                </tr>
+            </thead>
+
+            <tbody id="subjectRows"></tbody>
+        </table>
+
+        <div class="summary">
+
+            <div class="summary-card">
+                <span>Overall Average</span>
+                <strong id="average">0%</strong>
+            </div>
+
+            <div class="summary-card">
+                <span>Sample Distinctions</span>
+                <strong id="distinctions">0</strong>
+            </div>
+
+            <div class="summary-card">
+                
+                <strong id="status">-</strong>
+            </div>
+
+        </div>
+
+        <div class="result-disclosure">
+           
+        </div>
+
+        <div class="actions">
+            <button onclick="window.print()">Print Statement</button>
+            <button onclick="logout()">Log Out</button>
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+     Examination Results Portal 
+</footer>
+
+<script>
+
+// Fictional sample percentages and levels.
+
+const subjects = [
+    { name: "English Home Language", percentage: 82, level: 7 },
+    { name: "Afrikaans First Additional Language", percentage: 78, level: 6 },
+    { name: "Mathematics", percentage: 76, level: 6 },
+    { name: "Accounting", percentage: 74, level: 6 },
+    { name: "Life Orientation", percentage: 90, level: 7 },
+    { name: "Life Sciences", percentage: 84, level: 7 },
+    { name: "Physical Sciences", percentage: 73, level: 6 }
+];
+
+const sampleExamNumber = "2268780956463";
+
+function showResults() {
+
+    const name = document.getElementById("candidate").value.trim();
+    const exam = document.getElementById("exam").value.trim();
+
+    const error = document.getElementById("errorMessage");
+
+    if (!name || !exam) {
+        error.textContent = "Please enter your candidate name and examination number.";
+        return;
+    }
+
+    if (exam !== sampleExamNumber) {
+        error.textContent = "Incorrect examination number. Please try again.";
+        return;
+    }
+
+    error.textContent = "";
+
+    document.getElementById("displayName").textContent = name;
+    document.getElementById("displayExam").textContent = exam;
+
+    const rows = document.getElementById("subjectRows");
+    rows.innerHTML = "";
+
+    let total = 0;
+
+    const distinctionSubjects = [
+        "English Home Language",
+        "Afrikaans First Additional Language",
+        "Life Sciences",
+        "Life Orientation"
+    ];
+
+    let distinctions = 0;
+
+    subjects.forEach(subject => {
+
+        total += subject.percentage;
+
+        if (distinctionSubjects.includes(subject.name)) {
+            distinctions++;
+        }
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${subject.name}</td>
+            <td>${subject.percentage}%</td>
+            <td>${subject.level}</td>
+        `;
+
+        rows.appendChild(row);
+    });
+
+    const average = (total / subjects.length).toFixed(1);
+
+    document.getElementById("average").textContent = average + "%";
+    document.getElementById("distinctions").textContent = distinctions;
+    document.getElementById("status").textContent = "Sample only";
+
+    document.getElementById("login").classList.add("hidden");
+    document.getElementById("results").classList.remove("hidden");
+}
+
+function logout() {
+
+    document.getElementById("results").classList.add("hidden");
+    document.getElementById("login").classList.remove("hidden");
+
+    document.getElementById("candidate").value = "";
+    document.getElementById("exam").value = "";
+    document.getElementById("errorMessage").textContent = "";
+}
+
+</script>
+
+</body>
+</html>
