@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> Examination Results Portal</title>
+<title>Independent Examination Results Portal</title>
 
 <style>
 * {
@@ -13,15 +14,15 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #f2f4f8;
+    background: #f1f3f7;
     color: #222;
 }
 
 header {
-    background: #101f3c;
+    background: #101d38;
     color: white;
     text-align: center;
-    padding: 25px 15px;
+    padding: 28px 15px;
     border-bottom: 5px solid #c9a646;
 }
 
@@ -31,19 +32,20 @@ header h1 {
 }
 
 header p {
-    margin-bottom: 0;
-    color: #e4d6a5;
+    margin: 8px 0 0;
+    color: #e5e5e5;
 }
 
-.notice {
-    max-width: 850px;
-    margin: 20px auto;
-    padding: 14px;
+.disclosure {
     background: #fff3cd;
-    border: 1px solid #e0bd54;
     color: #664d03;
+    border: 1px solid #ffecb5;
+    padding: 13px;
     text-align: center;
     font-weight: bold;
+    margin: 20px auto;
+    max-width: 850px;
+    border-radius: 5px;
 }
 
 .container {
@@ -52,44 +54,50 @@ header p {
     padding: 25px;
     background: white;
     border-radius: 8px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
 }
 
 h2 {
-    color: #101f3c;
-    border-bottom: 2px solid #c9a646;
-    padding-bottom: 10px;
+    color: #101d38;
+    margin-top: 0;
+}
+
+label {
+    display: block;
+    margin-top: 18px;
+    font-weight: bold;
 }
 
 input {
     width: 100%;
-    padding: 12px;
-    margin: 8px 0 16px;
+    padding: 13px;
+    margin-top: 7px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    font-size: 16px;
 }
 
 button {
-    background: #101f3c;
+    background: #101d38;
     color: white;
-    padding: 12px 20px;
     border: none;
+    padding: 13px 22px;
+    margin-top: 22px;
     border-radius: 5px;
     cursor: pointer;
-    margin: 5px;
+    font-size: 15px;
 }
 
 button:hover {
-    background: #263d67;
+    background: #243b65;
 }
 
 .gold {
-    background: #c9a646;
-    color: #101f3c;
+    color: #b18a25;
     font-weight: bold;
 }
 
-.hidden {
+#resultsSection {
     display: none;
 }
 
@@ -100,14 +108,14 @@ table {
 }
 
 th {
-    background: #101f3c;
+    background: #101d38;
     color: white;
     padding: 13px;
     text-align: left;
 }
 
 td {
-    padding: 12px;
+    padding: 13px;
     border-bottom: 1px solid #ddd;
 }
 
@@ -115,61 +123,70 @@ tr:nth-child(even) {
     background: #f5f6f8;
 }
 
-.distinction {
-    color: #176b36;
+.level {
     font-weight: bold;
+    color: #101d38;
 }
 
 .summary {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 12px;
+    gap: 15px;
     margin-top: 25px;
 }
 
-.summary div {
-    background: #101f3c;
-    color: white;
+.summary-card {
+    background: #f1f3f7;
     padding: 18px;
-    text-align: center;
-    border-bottom: 4px solid #c9a646;
+    border-left: 4px solid #c9a646;
     border-radius: 5px;
 }
 
-.summary strong {
-    display: block;
-    font-size: 24px;
-    margin-top: 8px;
+.summary-card h3 {
+    margin: 0 0 10px;
+    font-size: 14px;
+    color: #555;
 }
 
-.disclosure {
+.summary-card p {
+    font-size: 23px;
+    font-weight: bold;
+    margin: 0;
+    color: #101d38;
+}
+
+.results-disclosure {
+    background: #fff3cd;
+    color: #664d03;
+    border: 1px solid #ffecb5;
+    padding: 12px;
+    margin-top: 20px;
     text-align: center;
-    color: #555;
-    font-size: 12px;
-    margin-top: 25px;
+    font-weight: bold;
 }
 
 footer {
     text-align: center;
-    background: #101f3c;
-    color: white;
-    padding: 18px;
-    margin-top: 30px;
-    font-size: 12px;
+    padding: 22px;
+    color: #666;
+    font-size: 13px;
 }
 
 @media print {
+    header, footer, .no-print, .disclosure {
+        display: none;
+    }
+
     body {
         background: white;
     }
 
-    button,
-    #loginSection {
-        display: none !important;
-    }
-
     .container {
         box-shadow: none;
+    }
+
+    #resultsSection {
+        display: block !important;
     }
 }
 </style>
@@ -182,12 +199,14 @@ footer {
     <p>Candidate Results Demonstration</p>
 </header>
 
-<div class="notice">
-   
+<div class="disclosure">
+    
 </div>
 
-<div class="container" id="loginSection">
+<div class="container no-print" id="loginSection">
+
     <h2>Candidate Login</h2>
+    <p>Enter your candidate details to access the  results.</p>
 
     <label for="candidate">Candidate Name</label>
     <input type="text" id="candidate" placeholder="Enter candidate name">
@@ -195,21 +214,20 @@ footer {
     <label for="exam">Examination Number</label>
     <input type="text" id="exam" placeholder="Enter examination number">
 
-    <button onclick="showResults()">View Results</button>
+    <button onclick="showResults()">Access Results</button>
 
-    <p id="error" style="color:red;"></p>
 </div>
 
-<div class="container hidden" id="resultsSection">
+<div class="container" id="resultsSection">
 
-    <h2>Candidate Information</h2>
+    <h2>Candidate Results</h2>
 
     <p><strong>Candidate:</strong> <span id="displayName"></span></p>
     <p><strong>Examination Number:</strong> <span id="displayExam"></span></p>
 
-    <h2>Fictional Sample Results</h2>
-
-    <p><strong>Results Status:</strong>  results</p>
+    <div class="results-disclosure">
+        OFFICIAL EXAMINATION STATEMENT.
+    </div>
 
     <table>
         <thead>
@@ -223,40 +241,39 @@ footer {
     </table>
 
     <div class="summary">
-        <div>
-            Average
-            <strong id="average">0%</strong>
+
+        <div class="summary-card">
+            <h3>Average Percentage</h3>
+            <p id="average">0%</p>
         </div>
 
-        <div>
-             Distinctions
-            <strong id="distinctions">0</strong>
+        <div class="summary-card">
+            <h3> Distinctions</h3>
+            <p id="distinctions">0</p>
         </div>
 
-        <div>
-            Overall Status
-           >
+        <div class="summary-card">
+            <h3> Status</h3>
+           
         </div>
+
     </div>
 
-    <div class="disclosure">
-        OFFICIAL EXAMINATION STATEMENT.
-    </div>
-
-    <div style="text-align:center; margin-top:25px;">
-        <button class="gold" onclick="window.print()">Print Sample Results</button>
+    <div class="no-print">
+        <button onclick="window.print()">Print Results</button>
         <button onclick="logout()">Logout</button>
     </div>
 
 </div>
 
 <footer>
-    affiliated with SACAI
+   
 </footer>
 
 <script>
 
-// Fictional demonstration results
+const REQUIRED_EXAM_NUMBER = "2268780956463";
+
 const subjects = [
     { name: "English Home Language", percentage: 82, level: 7 },
     { name: "Afrikaans First Additional Language", percentage: 81, level: 7 },
@@ -267,7 +284,6 @@ const subjects = [
     { name: "Physical Sciences", percentage: 73, level: 6 }
 ];
 
-// Only these four subjects count as distinctions
 const distinctionSubjects = [
     "English Home Language",
     "Afrikaans First Additional Language",
@@ -281,12 +297,14 @@ function showResults() {
     const exam = document.getElementById("exam").value.trim();
 
     if (!name || !exam) {
-        document.getElementById("error").textContent =
-            "Please enter both candidate name and examination number.";
+        alert("Please enter your candidate name and examination number.");
         return;
     }
 
-    document.getElementById("error").textContent = "";
+    if (exam !== REQUIRED_EXAM_NUMBER) {
+        alert("Incorrect examination number. Please try again.");
+        return;
+    }
 
     document.getElementById("displayName").textContent = name;
     document.getElementById("displayExam").textContent = exam;
@@ -295,23 +313,22 @@ function showResults() {
     table.innerHTML = "";
 
     let total = 0;
+    let distinctionCount = 0;
 
     subjects.forEach(subject => {
 
         total += subject.percentage;
 
-        const row = document.createElement("tr");
+        if (distinctionSubjects.includes(subject.name)) {
+            distinctionCount++;
+        }
 
-        const isDistinction =
-            distinctionSubjects.includes(subject.name) &&
-            subject.percentage >= 80;
+        const row = document.createElement("tr");
 
         row.innerHTML = `
             <td>${subject.name}</td>
             <td>${subject.percentage}%</td>
-            <td class="${isDistinction ? "distinction" : ""}">
-                ${subject.level}
-            </td>
+            <td class="level">${subject.level}</td>
         `;
 
         table.appendChild(row);
@@ -319,24 +336,23 @@ function showResults() {
 
     const average = (total / subjects.length).toFixed(1);
 
-    const distinctions = subjects.filter(subject =>
-        distinctionSubjects.includes(subject.name) &&
-        subject.percentage >= 80
-    ).length;
-
     document.getElementById("average").textContent = average + "%";
-    document.getElementById("distinctions").textContent = distinctions;
+    document.getElementById("distinctions").textContent = distinctionCount;
+    document.getElementById("status").textContent = "Sample";
 
-    document.getElementById("loginSection").classList.add("hidden");
-    document.getElementById("resultsSection").classList.remove("hidden");
+    document.getElementById("loginSection").style.display = "none";
+    document.getElementById("resultsSection").style.display = "block";
+
 }
 
 function logout() {
-    document.getElementById("resultsSection").classList.add("hidden");
-    document.getElementById("loginSection").classList.remove("hidden");
+
+    document.getElementById("resultsSection").style.display = "none";
+    document.getElementById("loginSection").style.display = "block";
 
     document.getElementById("candidate").value = "";
     document.getElementById("exam").value = "";
+
 }
 
 </script>
