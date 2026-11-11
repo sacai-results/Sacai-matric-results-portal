@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Independent Examination Results Portal</title>
+<title>Sacai Examination Results Portal</title>
 
 <style>
 * {
@@ -173,8 +173,9 @@ footer {
 }
 
 @media print {
-   
-        display: none;
+    .no-print,
+    header {
+        display: none !important;
     }
 
     body {
@@ -188,6 +189,10 @@ footer {
     #resultsSection {
         display: block !important;
     }
+
+    .results-disclosure {
+        display: block !important;
+    }
 }
 </style>
 </head>
@@ -196,17 +201,17 @@ footer {
 
 <header>
     <h1>Independent Examination Results Portal</h1>
-    <p>Candidate Results Demonstration</p>
+    <p>Candidate Results </p>
 </header>
 
 <div class="disclosure">
-    
+   
 </div>
 
 <div class="container no-print" id="loginSection">
 
     <h2>Candidate Login</h2>
-    <p>Enter your candidate details to access the  results.</p>
+    <p>Enter your candidate details to access the results.</p>
 
     <label for="candidate">Candidate Name</label>
     <input type="text" id="candidate" placeholder="Enter candidate name">
@@ -226,7 +231,7 @@ footer {
     <p><strong>Examination Number:</strong> <span id="displayExam"></span></p>
 
     <div class="results-disclosure">
-        OFFICIAL EXAMINATION STATEMENT.
+        
     </div>
 
     <table>
@@ -248,13 +253,13 @@ footer {
         </div>
 
         <div class="summary-card">
-            <h3> Distinctions</h3>
+            <h3>Distinctions</h3>
             <p id="distinctions">0</p>
         </div>
 
         <div class="summary-card">
-            <h3> Status</h3>
-           
+            <h3>Status</h3>
+            <p id="status"></p>
         </div>
 
     </div>
@@ -267,7 +272,7 @@ footer {
 </div>
 
 <footer>
-   
+    Independent Examination Results 
 </footer>
 
 <script>
@@ -342,7 +347,6 @@ function showResults() {
 
     document.getElementById("loginSection").style.display = "none";
     document.getElementById("resultsSection").style.display = "block";
-
 }
 
 function logout() {
